@@ -60,7 +60,7 @@ jobs:
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
             DISABLE_READ_API=false
-            API_PATH=/
+            API_PATH=/explorer
             NETWORK_PATH=/explorer
             DISABLE_WEBAPP=false
             DISABLE_WRITE_API=false

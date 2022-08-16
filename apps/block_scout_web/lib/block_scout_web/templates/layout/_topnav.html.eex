@@ -135,12 +135,6 @@
             </div>
           </li>
         <% end %>
-        <li class="nav-item dropdown">
-            <span class="nav-link-icon">
-              <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
-            </span>
-            <%= subnetwork_title() %>
-        </li>
       </ul>
       <!-- Dark mode changer -->
       <button class="dark-mode-changer" id="dark-mode-changer">
