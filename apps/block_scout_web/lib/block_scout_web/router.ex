@@ -1,6 +1,7 @@
 defmodule BlockScoutWeb.Router do
   use BlockScoutWeb, :router
 
+  alias BlockScoutWeb.Plug.AllowIframe
   alias BlockScoutWeb.Plug.GraphQL
   alias BlockScoutWeb.{ApiRouter, WebRouter}
 
