@@ -46,14 +46,14 @@ defmodule BlockScoutWeb.Router do
     )
   else
     scope "/", BlockScoutWeb do
-      pipe_through(:browser)
+      pipe_through(:browser, BlockScoutWeb.Plug.AllowIframe])
       get("/api-docs", PageNotFoundController, :index)
       get("/eth-rpc-api-docs", PageNotFoundController, :index)
     end
   end
 
   scope "/", BlockScoutWeb do
-    pipe_through(:browser)
+    pipe_through(:browser, BlockScoutWeb.Plug.AllowIframe])
 
     get("/api-docs", APIDocsController, :index)
     get("/eth-rpc-api-docs", APIDocsController, :eth_rpc)
