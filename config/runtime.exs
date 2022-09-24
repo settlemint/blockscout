@@ -27,13 +27,24 @@ indexer_empty_blocks_sanitizer_batch_size =
 config :indexer, Indexer.Fetcher.EmptyBlocksSanitizer, batch_size: indexer_empty_blocks_sanitizer_batch_size
 
 config :block_scout_web, :footer,
-  chat_link: System.get_env("FOOTER_CHAT_LINK", "https://discord.gg/XmNatGKbPS"),
+  chat_link: System.get_env("FOOTER_CHAT_LINK", "https://discord.gg/blockscout"),
   forum_link: System.get_env("FOOTER_FORUM_LINK", "https://forum.poa.network/c/blockscout"),
   github_link: System.get_env("FOOTER_GITHUB_LINK", "https://github.com/blockscout/blockscout")
 
 ######################
 ### BlockScout Web ###
 ######################
+
+# Configures Ueberauth's Auth0 auth provider
+config :ueberauth, Ueberauth.Strategy.Auth0.OAuth,
+  domain: System.get_env("ACCOUNT_AUTH0_DOMAIN"),
+  client_id: System.get_env("ACCOUNT_AUTH0_CLIENT_ID"),
+  client_secret: System.get_env("ACCOUNT_AUTH0_CLIENT_SECRET")
+
+# Configures Ueberauth local settings
+config :ueberauth, Ueberauth,
+  logout_url: System.get_env("ACCOUNT_AUTH0_LOGOUT_URL"),
+  logout_return_to_url: System.get_env("ACCOUNT_AUTH0_LOGOUT_RETURN_URL")
 
 config :block_scout_web,
   version: System.get_env("BLOCKSCOUT_VERSION"),
@@ -72,7 +83,9 @@ config :block_scout_web,
   max_size_to_show_array_as_is: Integer.parse(System.get_env("MAX_SIZE_UNLESS_HIDE_ARRAY", "50")),
   max_length_to_show_string_without_trimming: System.get_env("MAX_STRING_LENGTH_WITHOUT_TRIMMING", "2040"),
   re_captcha_secret_key: System.get_env("RE_CAPTCHA_SECRET_KEY", nil),
-  re_captcha_client_key: System.get_env("RE_CAPTCHA_CLIENT_KEY", nil)
+  re_captcha_client_key: System.get_env("RE_CAPTCHA_CLIENT_KEY", nil),
+  chain_id: System.get_env("CHAIN_ID"),
+  json_rpc: System.get_env("JSON_RPC")
 
 default_api_rate_limit = 50
 default_api_rate_limit_str = Integer.to_string(default_api_rate_limit)
@@ -146,10 +159,14 @@ config :block_scout_web, BlockScoutWeb.Chain.Address.CoinBalance,
 
 config :ethereum_jsonrpc,
   rpc_transport: if(System.get_env("ETHEREUM_JSONRPC_TRANSPORT", "http") == "http", do: :http, else: :ipc),
-  ipc_path: System.get_env("IPC_PATH")
+  ipc_path: System.get_env("IPC_PATH"),
+  disable_archive_balances?: System.get_env("ETHEREUM_JSONRPC_DISABLE_ARCHIVE_BALANCES", "false") == "true"
 
 debug_trace_transaction_timeout = System.get_env("ETHEREUM_JSONRPC_DEBUG_TRACE_TRANSACTION_TIMEOUT", "5s")
 config :ethereum_jsonrpc, EthereumJSONRPC.Geth, debug_trace_transaction_timeout: debug_trace_transaction_timeout
+
+config :ethereum_jsonrpc, EthereumJSONRPC.PendingTransaction,
+  type: System.get_env("ETHEREUM_JSONRPC_PENDING_TRANSACTIONS_TYPE", "default")
 
 ################
 ### Explorer ###
@@ -304,6 +321,21 @@ config :explorer, Explorer.ThirdPartyIntegrations.Sourcify,
 config :explorer, Explorer.SmartContract.RustVerifierInterface,
   service_url: System.get_env("RUST_VERIFICATION_SERVICE_URL"),
   enabled: System.get_env("ENABLE_RUST_VERIFICATION_SERVICE") == "true"
+
+config :explorer, Explorer.ThirdPartyIntegrations.AirTable,
+  table_url: System.get_env("ACCOUNT_PUBLIC_TAGS_AIRTABLE_URL"),
+  api_key: System.get_env("ACCOUNT_PUBLIC_TAGS_AIRTABLE_API_KEY")
+
+config :explorer, Explorer.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: System.get_env("ACCOUNT_SENDGRID_API_KEY")
+
+config :explorer, Explorer.Account,
+  enabled: System.get_env("ACCOUNT_ENABLED") == "true",
+  sendgrid: [
+    sender: System.get_env("ACCOUNT_SENDGRID_SENDER"),
+    template: System.get_env("ACCOUNT_SENDGRID_TEMPLATE")
+  ]
 
 ###############
 ### Indexer ###

@@ -24,7 +24,8 @@ defmodule Explorer.Mixfile do
         dialyzer: :test
       ],
       start_permanent: Mix.env() == :prod,
-      version: "4.1.7"
+      version: "4.1.8",
+      xref: [exclude: [BlockScoutWeb.WebRouter.Helpers]]
     ]
   end
 
@@ -56,14 +57,16 @@ defmodule Explorer.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bcrypt_elixir, "~> 1.0"},
+      {:bamboo, "~> 2.2.0"},
+      {:mime, "~> 1.4"},
+      {:bcrypt_elixir, "~> 3.0"},
       # benchmark optimizations
       {:benchee, "~> 1.1.0", only: :test},
       # CSV output for benchee
       {:benchee_csv, "~> 1.0.0", only: :test},
       {:bypass, "~> 2.1", only: :test},
       {:briefly, "~> 0.4", github: "CargoSense/briefly"},
-      {:comeonin, "~> 4.0"},
+      {:comeonin, "~> 5.3"},
       {:credo, "~> 1.5", only: :test, runtime: false},
       # For Absinthe to load data in batches
       {:dataloader, "~> 1.0.0"},
@@ -87,7 +90,7 @@ defmodule Explorer.Mixfile do
       {:mock, "~> 0.3.0", only: [:test], runtime: false},
       {:mox, "~> 1.0", only: [:test]},
       {:phoenix_html, "== 3.0.4"},
-      {:poison, "~> 5.0.0"},
+      {:poison, "~> 4.0.1"},
       {:nimble_csv, "~> 1.1"},
       {:postgrex, ">= 0.0.0"},
       # For compatibility with `prometheus_process_collector`, which hasn't been updated yet
@@ -110,7 +113,9 @@ defmodule Explorer.Mixfile do
       {:timex, "~> 3.7.1"},
       {:con_cache, "~> 1.0"},
       {:tesla, "~> 1.4.4"},
-      {:cbor, "~> 1.0"}
+      {:cbor, "~> 1.0"},
+      {:cloak_ecto, "~> 1.2.0"},
+      {:redix, "~> 1.1"}
     ]
   end
 

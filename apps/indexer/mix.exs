@@ -14,7 +14,7 @@ defmodule Indexer.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       lockfile: "../../mix.lock",
       start_permanent: Mix.env() == :prod,
-      version: "4.1.7"
+      version: "4.1.8"
     ]
   end
 
@@ -39,7 +39,7 @@ defmodule Indexer.MixProject do
     [
       # Optional dependency of `:spandex` for `Spandex.Decorators`
       {:decorator, "~> 1.4"},
-      # JSONRPC access to Parity for `Explorer.Indexer`
+      # JSONRPC access to Nethermind for `Explorer.Indexer`
       {:ethereum_jsonrpc, in_umbrella: true},
       # RLP encoding
       {:ex_rlp, "~> 0.5.2"},
