@@ -83,13 +83,9 @@ WORKDIR /app
 COPY --from=builder /opt/release/blockscout .
 COPY --from=builder /app/apps/explorer/node_modules ./node_modules
 
-RUN chgrp -R 0 /opt/release && \
-    chgrp -R 0 /app && \
-    chmod -R g=u /opt/release && \
+RUN chgrp -R 0 /app && \
     chmod -R g=u /app && \
-    chown -R 1001:0 /opt/release && \
     chown -R 1001:0 /app && \
-    chmod 775 /opt/release && \
     chmod 775 /app
 
 USER 1001
