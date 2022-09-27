@@ -70,7 +70,7 @@ jobs:
             CACHE_ADDRESS_WITH_BALANCES_UPDATE_INTERVAL=
             DISABLE_BRIDGE_MARKET_CAP_UPDATER=true
             CACHE_BRIDGE_MARKET_CAP_UPDATE_INTERVAL=
-            SOCKET_ROOT=/explorer
+            SOCKET_ROOT=/
             CHAIN_ID=
             JSON_RPC=
             COIN_NAME=Native Token
