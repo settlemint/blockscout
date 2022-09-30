@@ -7,7 +7,7 @@ on:
 env:
   OTP_VERSION: '24.3.4.1'
   ELIXIR_VERSION: '1.13.4'
-  NEXT_RELEASE_VERSION: 4.1.9
+  NEXT_RELEASE_VERSION: 4.1.10
 
 jobs:
   push_to_registry:
@@ -56,6 +56,11 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
+          cache-from: type=registry,ref=ghcr.io/settlemint/blockscout:buildcache
+          cache-to: type=registry,ref=ghcr.io/settlemint/blockscout:buildcache,mode=max
+          platforms: |
+            linux/arm64
+            linux/amd64
           tags: ghcr.io/settlemint/blockscout:latest, ghcr.io/settlemint/blockscout:${{ env.NEXT_RELEASE_VERSION }}-prerelease-${{ env.SHORT_SHA }}, ghcr.io/settlemint/blockscout:${{ env.NEXT_RELEASE_VERSION }}
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
