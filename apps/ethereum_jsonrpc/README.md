@@ -1,6 +1,6 @@
 # EthereumJSONRPC
 
-Ethereum JSONRPC client.
+Ethereum JSONRPC client
 
 ## Configuration
 
