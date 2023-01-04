@@ -55,7 +55,7 @@ config :explorer, Explorer.Counters.AddressTokenUsdSum,
   enable_consolidation: true
 
 config :explorer, Explorer.Chain.Cache.ContractsCounter,
-  enabled: true,
+  enabled: false,
   enable_consolidation: true,
   update_interval_in_seconds: 30 * 60
 
