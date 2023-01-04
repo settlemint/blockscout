@@ -3,7 +3,7 @@ name: Publish Docker image on every push to master branch
 on:
   push:
     branches:
-      - master
+      - alpha
 env:
   OTP_VERSION: "24.3.4.1"
   ELIXIR_VERSION: "1.13.4"
@@ -39,7 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/settlemint/blockscout
+          images: ghcr.io/settlemint/blockscout-onprem
 
       - name: Add SHORT_SHA env property with commit short sha
         run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
@@ -61,7 +61,7 @@ jobs:
           platforms: |
             linux/arm64
             linux/amd64
-          tags: ghcr.io/settlemint/blockscout:latest, ghcr.io/settlemint/blockscout:${{ env.NEXT_RELEASE_VERSION }}-prerelease-${{ env.SHORT_SHA }}, ghcr.io/settlemint/blockscout:${{ env.NEXT_RELEASE_VERSION }}
+          tags: ghcr.io/settlemint/blockscout-onprem:latest, ghcr.io/settlemint/blockscout-onprem:${{ env.NEXT_RELEASE_VERSION }}-prerelease-${{ env.SHORT_SHA }}, ghcr.io/settlemint/blockscout-onprem:${{ env.NEXT_RELEASE_VERSION }}
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
             DISABLE_READ_API=false
