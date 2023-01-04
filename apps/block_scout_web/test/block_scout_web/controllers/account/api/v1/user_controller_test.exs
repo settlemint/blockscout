@@ -1,6 +1,7 @@
 defmodule BlockScoutWeb.Account.Api.V1.UserControllerTest do
   use BlockScoutWeb.ConnCase
 
+  alias Explorer.Chain.Address
   alias BlockScoutWeb.Models.UserFromAuth
 
   setup %{conn: conn} do
@@ -54,7 +55,7 @@ defmodule BlockScoutWeb.Account.Api.V1.UserControllerTest do
         |> post("/api/account/v1/user/tags/address", address_tag)
         |> json_response(200)
 
-      response =
+      _response =
         conn
         |> get("/api/account/v1/user/tags/address")
         |> json_response(200) == [tag_address_response]
@@ -92,7 +93,21 @@ defmodule BlockScoutWeb.Account.Api.V1.UserControllerTest do
              |> json_response(200))["id"]
 
           {addr, %{"display_name" => name, "label" => name, "address_hash" => addr},
-           %{"address_hash" => addr, "id" => id, "name" => name}}
+           %{
+             "address_hash" => addr,
+             "id" => id,
+             "name" => name,
+             "address" => %{
+               "hash" => Address.checksum(addr),
+               "implementation_name" => nil,
+               "is_contract" => false,
+               "is_verified" => false,
+               "name" => nil,
+               "private_tags" => [],
+               "public_tags" => [],
+               "watchlist_names" => []
+             }
+           }}
         end)
 
       assert Enum.all?(created, fn {addr, map_tag, _} ->
@@ -129,7 +144,21 @@ defmodule BlockScoutWeb.Account.Api.V1.UserControllerTest do
              |> json_response(200))["id"]
 
           {addr, %{"display_name" => name, "label" => name, "address_hash" => addr},
-           %{"address_hash" => addr, "id" => id, "name" => name}}
+           %{
+             "address_hash" => addr,
+             "id" => id,
+             "name" => name,
+             "address" => %{
+               "hash" => Address.checksum(addr),
+               "implementation_name" => nil,
+               "is_contract" => false,
+               "is_verified" => false,
+               "name" => nil,
+               "private_tags" => [],
+               "public_tags" => [],
+               "watchlist_names" => []
+             }
+           }}
         end)
 
       assert Enum.all?(created, fn {addr, map_tag, _} ->
@@ -214,7 +243,7 @@ defmodule BlockScoutWeb.Account.Api.V1.UserControllerTest do
         |> post("/api/account/v1/user/tags/transaction", tx_tag)
         |> json_response(200)
 
-      response =
+      _response =
         conn
         |> get("/api/account/v1/user/tags/transaction")
         |> json_response(200) == [tag_response]

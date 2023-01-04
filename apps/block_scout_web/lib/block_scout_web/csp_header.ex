@@ -9,9 +9,11 @@ defmodule BlockScoutWeb.CSPHeader do
   def init(opts), do: opts
 
   def call(conn, _opts) do
+    config = Application.get_env(:block_scout_web, __MODULE__)
+
     Controller.put_secure_browser_headers(conn, %{
       "content-security-policy" => "\
-        connect-src 'self' #{websocket_endpoints(conn)} wss://*.bridge.walletconnect.org/ https://*.settlemint.com/ wss://*.settlemint.com/ https://request-global.czilladx.com/ https://raw.githubusercontent.com/trustwallet/assets/ https://registry.walletconnect.org/data/wallets.json https://*.poa.network;\
+        connect-src 'self' #{websocket_endpoints(conn)} wss://*.bridge.walletconnect.org/ http://onprem.127.0.0.1.nip.io/ https://*.settlemint.com/ ws://onprem.127.0.0.1.nip.io/ wss://*.settlemint.com/ https://request-global.czilladx.com/ https://raw.githubusercontent.com/trustwallet/assets/ https://registry.walletconnect.org/data/wallets.json https://*.poa.network;\
         default-src 'self' https://*.settlemint.com/;\
         script-src 'self' 'unsafe-inline' 'unsafe-eval' https://coinzillatag.com https://www.google.com https://www.gstatic.com;\
         style-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com;\

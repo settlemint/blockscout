@@ -5,9 +5,9 @@ on:
     branches:
       - master
 env:
-  OTP_VERSION: '24.3.4.1'
-  ELIXIR_VERSION: '1.13.4'
-  NEXT_RELEASE_VERSION: 4.1.11
+  OTP_VERSION: "24.3.4.1"
+  ELIXIR_VERSION: "1.13.4"
+  NEXT_RELEASE_VERSION: 5.0.0
 
 jobs:
   push_to_registry:
@@ -65,8 +65,8 @@ jobs:
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
             DISABLE_READ_API=false
-            API_PATH=/explorer
-            NETWORK_PATH=/explorer
+            API_PATH=/insights
+            NETWORK_PATH=/insights
             DISABLE_WEBAPP=false
             DISABLE_WRITE_API=false
             CACHE_ENABLE_TOTAL_GAS_USAGE_COUNTER=
