@@ -182,7 +182,7 @@ const search = (value) => {
   analytics.trackEvent(eventName, eventProperties);
 
   if (value) {
-    window.location.href = `/explorer/search?q=${value}`;
+    window.location.href = `/search?q=${value}`; // `/insights/search?q=${value}`
   }
 };
 

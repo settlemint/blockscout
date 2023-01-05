@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - alpha
-
 env:
   OTP_VERSION: "24.3.4.1"
   ELIXIR_VERSION: "1.13.4"
@@ -66,8 +65,8 @@ jobs:
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
             DISABLE_READ_API=false
-            API_PATH=/explorer
-            NETWORK_PATH=/explorer
+            API_PATH=/
+            NETWORK_PATH=/
             DISABLE_WEBAPP=false
             DISABLE_WRITE_API=false
             CACHE_ENABLE_TOTAL_GAS_USAGE_COUNTER=
@@ -86,4 +85,4 @@ jobs:
             SECRET_KEY_BASE=RMgI4C1HSkxsEjdhtGMfwAHfyT6CKWXOgzCboJflfSm4jeAlic52io05KB6mqzc5
             ENABLE_TXS_STATS=true
             SHOW_TXS_CHART=true
-            LOGO=/explorer/images/blockscout_logo.svg
+            LOGO=/images/blockscout_logo.svg
