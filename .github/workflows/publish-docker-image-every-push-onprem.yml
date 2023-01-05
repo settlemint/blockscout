@@ -65,8 +65,8 @@ jobs:
           build-args: |
             CACHE_EXCHANGE_RATES_PERIOD=
             DISABLE_READ_API=false
-            API_PATH=/insights
-            NETWORK_PATH=/insights
+            API_PATH=/explorer
+            NETWORK_PATH=/explorer
             DISABLE_WEBAPP=false
             DISABLE_WRITE_API=false
             CACHE_ENABLE_TOTAL_GAS_USAGE_COUNTER=
