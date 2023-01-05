@@ -56,8 +56,8 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
-          cache-from: type=registry,ref=ghcr.io/settlemint/blockscout:buildcache
-          cache-to: type=registry,ref=ghcr.io/settlemint/blockscout:buildcache,mode=max
+          cache-from: type=registry,ref=ghcr.io/settlemint/blockscout-onprem:buildcache
+          cache-to: type=registry,ref=ghcr.io/settlemint/blockscout-onprem:buildcache,mode=max
           platforms: |
             linux/arm64
             linux/amd64
