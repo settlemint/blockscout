@@ -1,7 +1,7 @@
 import { Socket } from "phoenix";
 import { locale } from "./locale";
 
-let websocketRootUrl = process.env.SOCKET_ROOT;
+let websocketRootUrl = process.env.SOCKET_ROOT || window.location.pathname;
 if (!websocketRootUrl) {
   websocketRootUrl = "";
 }
