@@ -1,7 +1,7 @@
 import { Socket } from "phoenix";
 import { locale } from "./locale";
 
-let websocketRootUrl = process.env.SOCKET_ROOT || window.location.pathname;
+let websocketRootUrl = window.location.pathname;
 if (!websocketRootUrl) {
   websocketRootUrl = "";
 }
@@ -9,6 +9,7 @@ if (websocketRootUrl.endsWith("/")) {
   websocketRootUrl = websocketRootUrl.slice(0, -1);
 }
 console.log("WEBSOCKETROOTURL", websocketRootUrl);
+console.log("WEBSOCKETROOTURL2", window.location.pathname);
 const socket = new Socket(websocketRootUrl + "/socket", { params: { locale } });
 socket.connect();
 
