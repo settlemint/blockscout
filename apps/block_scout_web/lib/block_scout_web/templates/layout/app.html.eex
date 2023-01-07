@@ -7,32 +7,32 @@
 
     <%= case @view_module do %>
       <% Elixir.BlockScoutWeb.ChainView -> %>
-        <link rel="stylesheet" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/css/main-page.css") %>">
-        <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/chain.js") %>" as="script">
-        <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/chart-loader.js") %>" as="script">
-        <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/token-transfers-toggle.js") %>" as="script">
+        <link rel="stylesheet" href="<%= static_path(@conn, "/insights/${postgres_db}/css/main-page.css") %>">
+        <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/js/chain.js") %>" as="script">
+        <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/js/chart-loader.js") %>" as="script">
+        <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/js/token-transfers-toggle.js") %>" as="script">
       <% _ -> %>
-        <link rel="stylesheet" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/css/app.css") %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, "/insights/${postgres_db}/css/app.css") %>">
     <% end %>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/autocomplete.js") %>" as="script">
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/github.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/twitter.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/telegram.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/bar-chart.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/info-circle.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/icons/fontawesome/tag.svg") %>" as="image" crossorigin>
-    <link rel="preload" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/css/non-critical.css") %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="stylesheet" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/css/non-critical.css") %>">
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/js/autocomplete.js") %>" as="script">
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/github.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/twitter.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/telegram.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/bar-chart.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/info-circle.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/images/icons/fontawesome/tag.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/insights/${postgres_db}/css/non-critical.css") %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/insights/${postgres_db}/css/non-critical.css") %>">
     <%= render_existing(@view_module, "styles.html", assigns) %>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/apple-touch-icon.png") %>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/favicon-32x32.png") %>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/favicon-16x16.png") %>">
-    <link rel="manifest" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/manifest.webmanifest") %>">
-    <link rel="mask-icon" href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/safari-pinned-tab.svg") %>" color="#5bbad5">
-    <link rel="shortcut icon" type='image/x-icon' href="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/images/favicon.ico") %>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= static_path(@conn, "/insights/${postgres_db}/apple-touch-icon.png") %>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= static_path(@conn, "/insights/${postgres_db}/images/favicon-32x32.png") %>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= static_path(@conn, "/insights/${postgres_db}/images/favicon-16x16.png") %>">
+    <link rel="manifest" href="<%= static_path(@conn, "/insights/${postgres_db}/manifest.webmanifest") %>">
+    <link rel="mask-icon" href="<%= static_path(@conn, "/insights/${postgres_db}/safari-pinned-tab.svg") %>" color="#5bbad5">
+    <link rel="shortcut icon" type='image/x-icon' href="<%= static_path(@conn, "/insights/${postgres_db}/images/favicon.ico") %>">
     <meta name="msapplication-TileColor" content="#7dd79f">
-    <meta name="msapplication-config" content="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/browserconfig.xml") %>">
+    <meta name="msapplication-config" content="<%= static_path(@conn, "/insights/${postgres_db}/browserconfig.xml") %>">
     <meta name="theme-color" content="#ffffff">
 
     <%= render_existing(@view_module, "_metatags.html", assigns) || render("_default_title.html") %>
@@ -290,7 +290,7 @@
       @view_module != Elixir.BlockScoutWeb.AddressContractVerificationViaMultiPartFilesView &&
       @view_module != Elixir.BlockScoutWeb.StakesView
     ) do %>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/app.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/app.js") %>"></script>
     <% end %>
     <%=
       for status <- ["error", "warning", "success", "question"] do
@@ -299,16 +299,16 @@
     %>
     <%= render_existing(@view_module, "scripts.html", assigns) %>
     <%= if @view_module == Elixir.BlockScoutWeb.ChainView do %>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/chain.js") %>"></script>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/chart-loader.js") %>"></script>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/token-transfers-toggle.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/chain.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/chart-loader.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/token-transfers-toggle.js") %>"></script>
     <% end %>
-    <script defer src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/autocomplete.js") %>"></script>
+    <script defer src="<%= static_path(@conn, "/insights/${postgres_db}/js/autocomplete.js") %>"></script>
     <%= if @view_module in [Elixir.BlockScoutWeb.AddressContractVerificationView, Elixir.BlockScoutWeb.AddressContractVerificationVyperView, Elixir.BlockScoutWeb.AddressContractVerificationViaFlattenedCodeView, Elixir.BlockScoutWeb.AddressContractVerificationViaMultiPartFilesView, Elixir.BlockScoutWeb.AddressContractVerificationViaJsonView, Elixir.BlockScoutWeb.AddressContractVerificationViaStandardJsonInputView] do %>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/verification-form.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/verification-form.js") %>"></script>
     <% end %>
     <%= if @view_module in [Elixir.BlockScoutWeb.AddressContractVerificationViaMultiPartFilesView, Elixir.BlockScoutWeb.AddressContractVerificationViaJsonView, Elixir.BlockScoutWeb.AddressContractVerificationViaStandardJsonInputView] do %>
-      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/pmu-mini-bscout2-9035/js/dropzone.js") %>"></script>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/insights/${postgres_db}/js/dropzone.js") %>"></script>
     <% end %>
   </body>
 </html>
