@@ -1,50 +1,57 @@
-import 'bootstrap'
+import "bootstrap";
 
-export async function addChainToMM ({ btn }) {
+export async function addChainToMM({ btn }) {
   try {
-    const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
-    const chainIDFromInstance = getChainIdHex()
+    const chainIDFromWallet = await window.ethereum.request({
+      method: "eth_chainId",
+    });
+    const chainIDFromInstance = getChainIdHex();
 
-    const coinName = document.getElementById('js-coin-name').value
-    const subNetwork = document.getElementById('js-subnetwork').value
-    const jsonRPC = document.getElementById('js-json-rpc').value
-    const path = process.env.NETWORK_PATH || '/'
+    const coinName = document.getElementById("js-coin-name").value;
+    const subNetwork = document.getElementById("js-subnetwork").value;
+    const jsonRPC = document.getElementById("js-json-rpc").value;
+    const path = window.location.pathname; // process.env.NETWORK_PATH || '/'
+    console.log("PATH", path);
 
-    const blockscoutURL = location.protocol + '//' + location.host + path
+    const blockscoutURL = location.protocol + "//" + location.host + path;
     if (chainIDFromWallet !== chainIDFromInstance) {
       await window.ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [{
-          chainId: chainIDFromInstance,
-          chainName: subNetwork,
-          nativeCurrency: {
-            name: coinName,
-            symbol: coinName,
-            decimals: 18
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: chainIDFromInstance,
+            chainName: subNetwork,
+            nativeCurrency: {
+              name: coinName,
+              symbol: coinName,
+              decimals: 18,
+            },
+            rpcUrls: [jsonRPC],
+            blockExplorerUrls: [blockscoutURL],
           },
-          rpcUrls: [jsonRPC],
-          blockExplorerUrls: [blockscoutURL]
-        }]
-      })
+        ],
+      });
     } else {
-      btn.tooltip('dispose')
-      btn.tooltip({
-        title: `You're already connected to ${subNetwork}`,
-        trigger: 'click',
-        placement: 'bottom'
-      }).tooltip('show')
+      btn.tooltip("dispose");
+      btn
+        .tooltip({
+          title: `You're already connected to ${subNetwork}`,
+          trigger: "click",
+          placement: "bottom",
+        })
+        .tooltip("show");
 
       setTimeout(() => {
-        btn.tooltip('dispose')
-      }, 3000)
+        btn.tooltip("dispose");
+      }, 3000);
     }
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
-function getChainIdHex () {
-  const chainIDFromDOM = document.getElementById('js-chain-id').value
-  const chainIDFromInstance = parseInt(chainIDFromDOM)
-  return chainIDFromInstance && `0x${chainIDFromInstance.toString(16)}`
+function getChainIdHex() {
+  const chainIDFromDOM = document.getElementById("js-chain-id").value;
+  const chainIDFromInstance = parseInt(chainIDFromDOM);
+  return chainIDFromInstance && `0x${chainIDFromInstance.toString(16)}`;
 }

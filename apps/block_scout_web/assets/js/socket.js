@@ -9,7 +9,13 @@ if (websocketRootUrl.endsWith("/")) {
   websocketRootUrl = websocketRootUrl.slice(0, -1);
 }
 console.log("WEBSOCKETROOTURL", websocketRootUrl);
-const socket = new Socket(websocketRootUrl + "/socket", { params: { locale } });
+const socket = new Socket(websocketRootUrl + "/socket", {
+  logger: (kind, msg, data) => {
+    console.log(`${kind}: ${msg}`, data);
+  },
+  params: { locale },
+  transport: WebSocket,
+});
 socket.connect();
 
 export default socket;
