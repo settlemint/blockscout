@@ -1,18 +1,18 @@
-import { Socket } from 'phoenix'
-import { locale } from './locale'
+import { Socket } from "phoenix";
+import { locale } from "./locale";
 
-let websocketRootUrl = process.env.SOCKET_ROOT
+let websocketRootUrl = process.env.SOCKET_ROOT;
 if (!websocketRootUrl) {
-  websocketRootUrl = ''
+  websocketRootUrl = "";
 }
-if (websocketRootUrl.endsWith('/')) {
-  websocketRootUrl = websocketRootUrl.slice(0, -1)
+if (websocketRootUrl.endsWith("/")) {
+  websocketRootUrl = websocketRootUrl.slice(0, -1);
 }
+console.log("WEBSOCKETROOTURL", websocketRootUrl);
+const socket = new Socket(websocketRootUrl + "/socket", { params: { locale } });
+socket.connect();
 
-const socket = new Socket(websocketRootUrl + '/socket', { params: { locale } })
-socket.connect()
-
-export default socket
+export default socket;
 
 /**
  * Subscribes the client in the channel given the topic.
@@ -25,14 +25,14 @@ export default socket
  *
  * Returns a Channel instance.
  */
-export function subscribeChannel (topic) {
-  const channel = socket.channels.find(channel => channel.topic === topic)
+export function subscribeChannel(topic) {
+  const channel = socket.channels.find((channel) => channel.topic === topic);
 
   if (channel) {
-    return channel
+    return channel;
   } else {
-    const channel = socket.channel(topic, {})
-    channel.join()
-    return channel
+    const channel = socket.channel(topic, {});
+    channel.join();
+    return channel;
   }
 }
