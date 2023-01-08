@@ -142,7 +142,7 @@ config :block_scout_web, :api_rate_limit,
 config :block_scout_web, BlockScoutWeb.Endpoint,
   server: true,
   static_url: [
-    path: "/"
+    path: "/insights/#{System.get_env("postgres_db", nil)}"
   ],
   url: [
     scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "http",
