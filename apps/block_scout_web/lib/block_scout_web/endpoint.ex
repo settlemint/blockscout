@@ -6,8 +6,8 @@ defmodule BlockScoutWeb.Endpoint do
     plug(Phoenix.Ecto.SQL.Sandbox, repo: Explorer.Repo)
   end
 
-  socket("/insights/#{System.get_env("postgres_db", nil)}/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
-  socket("/insights/#{System.get_env("postgres_db", nil)}/socket/v2", BlockScoutWeb.UserSocketV2, websocket: [timeout: 45_000])
+  socket("/socket", BlockScoutWeb.UserSocket, websocket: [timeout: 45_000])
+  socket("/socket/v2", BlockScoutWeb.UserSocketV2, websocket: [timeout: 45_000])
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -15,7 +15,7 @@ defmodule BlockScoutWeb.Endpoint do
   # when deploying your static files in production.
   plug(
     Plug.Static,
-    at: "/",
+    at: "/insights/#{System.get_env("postgres_db/",
     from: :block_scout_web,
     gzip: true,
     only: ~w(
