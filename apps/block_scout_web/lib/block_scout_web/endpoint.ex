@@ -30,6 +30,7 @@ defmodule BlockScoutWeb.Endpoint do
       mstile-150x150.png
       safari-pinned-tab.svg
       robots.txt
+      manifest.webmanifest
     ),
     only_matching: ~w(manifest)
   )
