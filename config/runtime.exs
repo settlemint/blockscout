@@ -142,12 +142,12 @@ config :block_scout_web, :api_rate_limit,
 config :block_scout_web, BlockScoutWeb.Endpoint,
   server: true,
   static_url: [
-    path: "/insights/#{System.get_env("postgres_db", nil)}"
+    path: System.get_env("PATH_PREFIX") || "/"
   ],
   url: [
     scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "http",
     host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
-    path: "/insights/#{System.get_env("postgres_db", nil)}"
+    path: System.get_env("PATH_PREFIX") || "/"
   ]
 
 # Configures History
