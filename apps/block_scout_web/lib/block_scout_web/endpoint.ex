@@ -30,9 +30,8 @@ defmodule BlockScoutWeb.Endpoint do
       mstile-150x150.png
       safari-pinned-tab.svg
       robots.txt
-      manifest.webmanifest
     ),
-#    only_matching: ~w(manifest)
+    only_matching: ~w(manifest)
   )
 
   # Code reloading can be explicitly enabled under the
