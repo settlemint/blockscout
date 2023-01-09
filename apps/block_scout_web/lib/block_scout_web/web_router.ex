@@ -27,254 +27,254 @@ defmodule BlockScoutWeb.WebRouter do
   end
 
   if Mix.env() == :dev do
-    forward("/sent_emails", Bamboo.SentEmailViewerPlug)
+    forward("/insights/:entity/sent_emails", Bamboo.SentEmailViewerPlug)
   end
 
-  scope "/auth", BlockScoutWeb do
+  scope "/insights/:entity/auth", BlockScoutWeb do
     pipe_through(:account)
 
-    get("/profile", Account.AuthController, :profile)
-    get("/logout", Account.AuthController, :logout)
-    get("/:provider", Account.AuthController, :request)
-    get("/:provider/callback", Account.AuthController, :callback)
+    get("/insights/:entity/profile", Account.AuthController, :profile)
+    get("/insights/:entity/logout", Account.AuthController, :logout)
+    get("/insights/:entity/:provider", Account.AuthController, :request)
+    get("/insights/:entity/:provider/callback", Account.AuthController, :callback)
   end
 
-  scope "/account", BlockScoutWeb do
+  scope "/insights/:entity/account", BlockScoutWeb do
     pipe_through(:account)
 
-    resources("/tag_address", Account.TagAddressController,
+    resources("/insights/:entity/tag_address", Account.TagAddressController,
       only: [:index, :new, :create, :delete],
       as: :tag_address
     )
 
-    resources("/tag_transaction", Account.TagTransactionController,
+    resources("/insights/:entity/tag_transaction", Account.TagTransactionController,
       only: [:index, :new, :create, :delete],
       as: :tag_transaction
     )
 
-    resources("/watchlist", Account.WatchlistController,
+    resources("/insights/:entity/watchlist", Account.WatchlistController,
       only: [:show],
       singleton: true,
       as: :watchlist
     )
 
-    resources("/watchlist_address", Account.WatchlistAddressController,
+    resources("/insights/:entity/watchlist_address", Account.WatchlistAddressController,
       only: [:new, :create, :edit, :update, :delete],
       as: :watchlist_address
     )
 
-    resources("/api_key", Account.ApiKeyController,
+    resources("/insights/:entity/api_key", Account.ApiKeyController,
       only: [:new, :create, :edit, :update, :delete, :index],
       as: :api_key
     )
 
-    resources("/custom_abi", Account.CustomABIController,
+    resources("/insights/:entity/custom_abi", Account.CustomABIController,
       only: [:new, :create, :edit, :update, :delete, :index],
       as: :custom_abi
     )
 
-    resources("/public_tags_request", Account.PublicTagsRequestController,
+    resources("/insights/:entity/public_tags_request", Account.PublicTagsRequestController,
       only: [:new, :create, :edit, :update, :delete, :index],
       as: :public_tags_request
     )
   end
 
   # Disallows Iframes (write routes)
-  scope "/", BlockScoutWeb do
+  scope "/insights/:entity/", BlockScoutWeb do
     pipe_through(:browser)
   end
 
   # Allows Iframes (read-only routes)
-  scope "/", BlockScoutWeb do
+  scope "/insights/:entity/", BlockScoutWeb do
     pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
 
-    resources("/", ChainController, only: [:show], singleton: true, as: :chain)
+    resources("/insights/:entity/", ChainController, only: [:show], singleton: true, as: :chain)
 
-    resources("/market-history-chart", Chain.MarketHistoryChartController,
+    resources("/insights/:entity/market-history-chart", Chain.MarketHistoryChartController,
       only: [:show],
       singleton: true
     )
 
-    resources("/transaction-history-chart", Chain.TransactionHistoryChartController,
+    resources("/insights/:entity/transaction-history-chart", Chain.TransactionHistoryChartController,
       only: [:show],
       singleton: true
     )
 
-    resources "/block", BlockController, only: [:show], param: "hash_or_number" do
-      resources("/transactions", BlockTransactionController, only: [:index], as: :transaction)
+    resources "/insights/:entity/block", BlockController, only: [:show], param: "hash_or_number" do
+      resources("/insights/:entity/transactions", BlockTransactionController, only: [:index], as: :transaction)
     end
 
-    resources("/blocks", BlockController, as: :blocks, only: [:index])
+    resources("/insights/:entity/blocks", BlockController, as: :blocks, only: [:index])
 
-    resources "/blocks", BlockController,
+    resources "/insights/:entity/blocks", BlockController,
       as: :block_secondary,
       only: [:show],
       param: "hash_or_number" do
-      resources("/transactions", BlockTransactionController, only: [:index], as: :transaction)
+      resources("/insights/:entity/transactions", BlockTransactionController, only: [:index], as: :transaction)
     end
 
-    get("/reorgs", BlockController, :reorg, as: :reorg)
+    get("/insights/:entity/reorgs", BlockController, :reorg, as: :reorg)
 
-    get("/uncles", BlockController, :uncle, as: :uncle)
+    get("/insights/:entity/uncles", BlockController, :uncle, as: :uncle)
 
-    resources("/pending-transactions", PendingTransactionController, only: [:index])
+    resources("/insights/:entity/pending-transactions", PendingTransactionController, only: [:index])
 
-    resources("/recent-transactions", RecentTransactionsController, only: [:index])
+    resources("/insights/:entity/recent-transactions", RecentTransactionsController, only: [:index])
 
-    resources("/verified-contracts", VerifiedContractsController, only: [:index])
+    resources("/insights/:entity/verified-contracts", VerifiedContractsController, only: [:index])
 
-    get("/txs", TransactionController, :index)
+    get("/insights/:entity/txs", TransactionController, :index)
 
-    resources "/tx", TransactionController, only: [:show] do
+    resources "/insights/:entity/tx", TransactionController, only: [:show] do
       resources(
-        "/internal-transactions",
+        "/insights/:entity/internal-transactions",
         TransactionInternalTransactionController,
         only: [:index],
         as: :internal_transaction
       )
 
       resources(
-        "/raw-trace",
+        "/insights/:entity/raw-trace",
         TransactionRawTraceController,
         only: [:index],
         as: :raw_trace
       )
 
-      resources("/logs", TransactionLogController, only: [:index], as: :log)
+      resources("/insights/:entity/logs", TransactionLogController, only: [:index], as: :log)
 
-      resources("/token-transfers", TransactionTokenTransferController,
+      resources("/insights/:entity/token-transfers", TransactionTokenTransferController,
         only: [:index],
         as: :token_transfer
       )
 
-      resources("/state", TransactionStateController,
+      resources("/insights/:entity/state", TransactionStateController,
         only: [:index],
         as: :state
       )
     end
 
-    resources("/accounts", AddressController, only: [:index])
+    resources("/insights/:entity/accounts", AddressController, only: [:index])
 
-    resources("/tokens", TokensController, only: [:index])
+    resources("/insights/:entity/tokens", TokensController, only: [:index])
 
-    resources "/address", AddressController, only: [:show] do
-      resources("/transactions", AddressTransactionController, only: [:index], as: :transaction)
+    resources "/insights/:entity/address", AddressController, only: [:show] do
+      resources("/insights/:entity/transactions", AddressTransactionController, only: [:index], as: :transaction)
 
       resources(
-        "/internal-transactions",
+        "/insights/:entity/internal-transactions",
         AddressInternalTransactionController,
         only: [:index],
         as: :internal_transaction
       )
 
       resources(
-        "/validations",
+        "/insights/:entity/validations",
         AddressValidationController,
         only: [:index],
         as: :validation
       )
 
       resources(
-        "/contracts",
+        "/insights/:entity/contracts",
         AddressContractController,
         only: [:index],
         as: :contract
       )
 
       resources(
-        "/decompiled-contracts",
+        "/insights/:entity/decompiled-contracts",
         AddressDecompiledContractController,
         only: [:index],
         as: :decompiled_contract
       )
 
       resources(
-        "/logs",
+        "/insights/:entity/logs",
         AddressLogsController,
         only: [:index],
         as: :logs
       )
 
       resources(
-        "/contract_verifications",
+        "/insights/:entity/contract_verifications",
         AddressContractVerificationController,
         only: [:new],
         as: :verify_contract
       )
 
       resources(
-        "/verify-via-flattened-code",
+        "/insights/:entity/verify-via-flattened-code",
         AddressContractVerificationViaFlattenedCodeController,
         only: [:new],
         as: :verify_contract_via_flattened_code
       )
 
       resources(
-        "/verify-via-metadata-json",
+        "/insights/:entity/verify-via-metadata-json",
         AddressContractVerificationViaJsonController,
         only: [:new],
         as: :verify_contract_via_json
       )
 
       resources(
-        "/verify-via-standard-json-input",
+        "/insights/:entity/verify-via-standard-json-input",
         AddressContractVerificationViaStandardJsonInputController,
         only: [:new],
         as: :verify_contract_via_standard_json_input
       )
 
       resources(
-        "/verify-via-multi-part-files",
+        "/insights/:entity/verify-via-multi-part-files",
         AddressContractVerificationViaMultiPartFilesController,
         only: [:new],
         as: :verify_contract_via_multi_part_files
       )
 
       resources(
-        "/verify-vyper-contract",
+        "/insights/:entity/verify-vyper-contract",
         AddressContractVerificationVyperController,
         only: [:new],
         as: :verify_vyper_contract
       )
 
       resources(
-        "/read-contract",
+        "/insights/:entity/read-contract",
         AddressReadContractController,
         only: [:index, :show],
         as: :read_contract
       )
 
       resources(
-        "/read-proxy",
+        "/insights/:entity/read-proxy",
         AddressReadProxyController,
         only: [:index, :show],
         as: :read_proxy
       )
 
       resources(
-        "/write-contract",
+        "/insights/:entity/write-contract",
         AddressWriteContractController,
         only: [:index, :show],
         as: :write_contract
       )
 
       resources(
-        "/write-proxy",
+        "/insights/:entity/write-proxy",
         AddressWriteProxyController,
         only: [:index, :show],
         as: :write_proxy
       )
 
       resources(
-        "/token-transfers",
+        "/insights/:entity/token-transfers",
         AddressTokenTransferController,
         only: [:index],
         as: :token_transfers
       )
 
-      resources("/tokens", AddressTokenController, only: [:index], as: :token) do
+      resources("/insights/:entity/tokens", AddressTokenController, only: [:index], as: :token) do
         resources(
-          "/token-transfers",
+          "/insights/:entity/token-transfers",
           AddressTokenTransferController,
           only: [:index],
           as: :transfers
@@ -282,99 +282,99 @@ defmodule BlockScoutWeb.WebRouter do
       end
 
       resources(
-        "/token-balances",
+        "/insights/:entity/token-balances",
         AddressTokenBalanceController,
         only: [:index],
         as: :token_balance
       )
 
       resources(
-        "/coin-balances",
+        "/insights/:entity/coin-balances",
         AddressCoinBalanceController,
         only: [:index],
         as: :coin_balance
       )
 
       resources(
-        "/coin-balances/by-day",
+        "/insights/:entity/coin-balances/by-day",
         AddressCoinBalanceByDayController,
         only: [:index],
         as: :coin_balance_by_day
       )
     end
 
-    resources "/token", Tokens.TokenController, only: [:show], as: :token do
+    resources "/insights/:entity/token", Tokens.TokenController, only: [:show], as: :token do
       resources(
-        "/token-transfers",
+        "/insights/:entity/token-transfers",
         Tokens.TransferController,
         only: [:index],
         as: :transfer
       )
 
       resources(
-        "/read-contract",
+        "/insights/:entity/read-contract",
         Tokens.ContractController,
         only: [:index],
         as: :read_contract
       )
 
       resources(
-        "/write-contract",
+        "/insights/:entity/write-contract",
         Tokens.ContractController,
         only: [:index],
         as: :write_contract
       )
 
       resources(
-        "/read-proxy",
+        "/insights/:entity/read-proxy",
         Tokens.ContractController,
         only: [:index],
         as: :read_proxy
       )
 
       resources(
-        "/write-proxy",
+        "/insights/:entity/write-proxy",
         Tokens.ContractController,
         only: [:index],
         as: :write_proxy
       )
 
       resources(
-        "/token-holders",
+        "/insights/:entity/token-holders",
         Tokens.HolderController,
         only: [:index],
         as: :holder
       )
 
       resources(
-        "/inventory",
+        "/insights/:entity/inventory",
         Tokens.InventoryController,
         only: [:index],
         as: :inventory
       )
 
       resources(
-        "/instance",
+        "/insights/:entity/instance",
         Tokens.InstanceController,
         only: [:show],
         as: :instance
       ) do
         resources(
-          "/token-transfers",
+          "/insights/:entity/token-transfers",
           Tokens.Instance.TransferController,
           only: [:index],
           as: :transfer
         )
 
         resources(
-          "/metadata",
+          "/insights/:entity/metadata",
           Tokens.Instance.MetadataController,
           only: [:index],
           as: :metadata
         )
 
         resources(
-          "/token-holders",
+          "/insights/:entity/token-holders",
           Tokens.Instance.HolderController,
           only: [:index],
           as: :holder
@@ -382,78 +382,78 @@ defmodule BlockScoutWeb.WebRouter do
       end
     end
 
-    resources "/tokens", Tokens.TokenController, only: [:show], as: :token_secondary do
+    resources "/insights/:entity/tokens", Tokens.TokenController, only: [:show], as: :token_secondary do
       resources(
-        "/token-transfers",
+        "/insights/:entity/token-transfers",
         Tokens.TransferController,
         only: [:index],
         as: :transfer
       )
 
       resources(
-        "/read-contract",
+        "/insights/:entity/read-contract",
         Tokens.ContractController,
         only: [:index],
         as: :read_contract
       )
 
       resources(
-        "/write-contract",
+        "/insights/:entity/write-contract",
         Tokens.ContractController,
         only: [:index],
         as: :write_contract
       )
 
       resources(
-        "/read-proxy",
+        "/insights/:entity/read-proxy",
         Tokens.ContractController,
         only: [:index],
         as: :read_proxy
       )
 
       resources(
-        "/write-proxy",
+        "/insights/:entity/write-proxy",
         Tokens.ContractController,
         only: [:index],
         as: :write_proxy
       )
 
       resources(
-        "/token-holders",
+        "/insights/:entity/token-holders",
         Tokens.HolderController,
         only: [:index],
         as: :holder
       )
 
       resources(
-        "/inventory",
+        "/insights/:entity/inventory",
         Tokens.InventoryController,
         only: [:index],
         as: :inventory
       )
 
       resources(
-        "/instance",
+        "/insights/:entity/instance",
         Tokens.InstanceController,
         only: [:show],
         as: :instance
       ) do
         resources(
-          "/token-transfers",
+          "/insights/:entity/token-transfers",
           Tokens.Instance.TransferController,
           only: [:index],
           as: :transfer
         )
 
         resources(
-          "/metadata",
+          "/insights/:entity/metadata",
           Tokens.Instance.MetadataController,
           only: [:index],
           as: :metadata
         )
 
         resources(
-          "/token-holders",
+          "/insights/:entity/token-holders",
           Tokens.Instance.HolderController,
           only: [:index],
           as: :holder
@@ -462,39 +462,39 @@ defmodule BlockScoutWeb.WebRouter do
     end
 
     resources(
-      "/smart-contracts",
+      "/insights/:entity/smart-contracts",
       SmartContractController,
       only: [:index, :show],
       as: :smart_contract
     )
 
-    get("/address-counters", AddressController, :address_counters)
+    get("/insights/:entity/address-counters", AddressController, :address_counters)
 
-    get("/search", ChainController, :search)
+    get("/insights/:entity/search", ChainController, :search)
 
-    get("/search-logs", AddressLogsController, :search_logs)
+    get("/insights/:entity/search-logs", AddressLogsController, :search_logs)
 
-    get("/search-results", SearchController, :search_results)
+    get("/insights/:entity/search-results", SearchController, :search_results)
 
-    get("/search-verified-contracts", VerifiedContractsController, :search_verified_contracts)
+    get("/insights/:entity/search-verified-contracts", VerifiedContractsController, :search_verified_contracts)
 
-    get("/csv-export", CsvExportController, :index)
+    get("/insights/:entity/csv-export", CsvExportController, :index)
 
-    get("/transactions-csv", AddressTransactionController, :transactions_csv)
+    get("/insights/:entity/transactions-csv", AddressTransactionController, :transactions_csv)
 
-    get("/token-autocomplete", ChainController, :token_autocomplete)
+    get("/insights/:entity/token-autocomplete", ChainController, :token_autocomplete)
 
-    get("/token-transfers-csv", AddressTransactionController, :token_transfers_csv)
+    get("/insights/:entity/token-transfers-csv", AddressTransactionController, :token_transfers_csv)
 
-    get("/internal-transactions-csv", AddressTransactionController, :internal_transactions_csv)
+    get("/insights/:entity/internal-transactions-csv", AddressTransactionController, :internal_transactions_csv)
 
-    get("/logs-csv", AddressTransactionController, :logs_csv)
+    get("/insights/:entity/logs-csv", AddressTransactionController, :logs_csv)
 
-    get("/chain-blocks", ChainController, :chain_blocks, as: :chain_blocks)
+    get("/insights/:entity/chain-blocks", ChainController, :chain_blocks, as: :chain_blocks)
 
-    get("/token-counters", Tokens.TokenController, :token_counters)
+    get("/insights/:entity/token-counters", Tokens.TokenController, :token_counters)
 
-    get("/visualize/sol2uml", VisualizeSol2umlController, :index)
+    get("/insights/:entity/visualize/sol2uml", VisualizeSol2umlController, :index)
 
     get("/*path", PageNotFoundController, :index)
   end
