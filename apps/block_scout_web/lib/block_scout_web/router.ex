@@ -6,11 +6,11 @@ defmodule BlockScoutWeb.Router do
   alias BlockScoutWeb.{ApiRouter, WebRouter}
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:wobserver_enabled] do
-    forward("/insights/#{System.get_env("postgres_db", nil)}/wobserver", Wobserver.Web.Router)
+    forward("/wobserver", Wobserver.Web.Router)
   end
 
   if Application.compile_env(:block_scout_web, :admin_panel_enabled) do
-    forward("/insights/#{System.get_env("postgres_db", nil)}/admin", BlockScoutWeb.AdminRouter)
+    forward("/admin", BlockScoutWeb.AdminRouter)
   end
 
   pipeline :browser do
@@ -25,19 +25,19 @@ defmodule BlockScoutWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  forward("/insights/#{System.get_env("postgres_db", nil)}/api", ApiRouter)
+  forward("/api", ApiRouter)
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:reading_enabled] do
     # Needs to be 200 to support the schema introspection for graphiql
     @max_complexity 200
 
-    forward("/insights/#{System.get_env("postgres_db", nil)}/graphql", Absinthe.Plug,
+    forward("/graphql", Absinthe.Plug,
       schema: BlockScoutWeb.Schema,
       analyze_complexity: true,
       max_complexity: @max_complexity
     )
 
-    forward("/insights/#{System.get_env("postgres_db", nil)}/graphiql", Absinthe.Plug.GraphiQL,
+    forward("/graphiql", Absinthe.Plug.GraphiQL,
       schema: BlockScoutWeb.Schema,
       interface: :advanced,
       default_query: GraphQL.default_query(),
@@ -46,18 +46,18 @@ defmodule BlockScoutWeb.Router do
       max_complexity: @max_complexity
     )
   else
-    scope "/insights/:entity/", BlockScoutWeb do
+    scope "/", BlockScoutWeb do
       pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
-      get("/insights/:entity/api-docs", PageNotFoundController, :index)
-      get("/insights/:entity/eth-rpc-api-docs", PageNotFoundController, :index)
+      get("/api-docs", PageNotFoundController, :index)
+      get("/eth-rpc-api-docs", PageNotFoundController, :index)
     end
   end
 
-  scope "/insights/:entity/", BlockScoutWeb do
+  scope "/", BlockScoutWeb do
     pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
 
-    get("/insights/:entity/api-docs", APIDocsController, :index)
-    get("/insights/:entity/eth-rpc-api-docs", APIDocsController, :eth_rpc)
+    get("/api-docs", APIDocsController, :index)
+    get("/eth-rpc-api-docs", APIDocsController, :eth_rpc)
   end
 
   url_params = Application.compile_env(:block_scout_web, BlockScoutWeb.Endpoint)[:url]
@@ -65,26 +65,26 @@ defmodule BlockScoutWeb.Router do
   path = url_params[:path]
 
   if path != api_path do
-    scope to_string(api_path) <> "/insights/:entity/verify_smart_contract" do
+    scope to_string(api_path) <> "/verify_smart_contract" do
       pipe_through(:api)
 
-      post("/insights/:entity/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
+      post("/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
     end
   else
-    scope "/insights/:entity/verify_smart_contract" do
+    scope "/verify_smart_contract" do
       pipe_through(:api)
 
-      post("/insights/:entity/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
+      post("/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
     end
   end
 
   if Application.compile_env(:block_scout_web, WebRouter)[:enabled] do
-    forward("/insights/#{System.get_env("postgres_db", nil)}/", BlockScoutWeb.WebRouter)
+    forward("/", BlockScoutWeb.WebRouter)
   else
-    scope "/insights/:entity/", BlockScoutWeb do
+    scope "/", BlockScoutWeb do
       pipe_through(:browser)
 
-      forward("/insights/#{System.get_env("postgres_db", nil)}/", APIDocsController, :index)
+      forward("/", APIDocsController, :index)
     end
   end
 end
