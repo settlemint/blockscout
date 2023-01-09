@@ -25,19 +25,19 @@ defmodule BlockScoutWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  forward("/api", ApiRouter)
+  forward("/insights/:entity/api", ApiRouter)
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:reading_enabled] do
     # Needs to be 200 to support the schema introspection for graphiql
     @max_complexity 200
 
-    forward("/graphql", Absinthe.Plug,
+    forward("/insights/:entity/graphql", Absinthe.Plug,
       schema: BlockScoutWeb.Schema,
       analyze_complexity: true,
       max_complexity: @max_complexity
     )
 
-    forward("/graphiql", Absinthe.Plug.GraphiQL,
+    forward("/insights/:entity/graphiql", Absinthe.Plug.GraphiQL,
       schema: BlockScoutWeb.Schema,
       interface: :advanced,
       default_query: GraphQL.default_query(),
@@ -46,18 +46,18 @@ defmodule BlockScoutWeb.Router do
       max_complexity: @max_complexity
     )
   else
-    scope "/", BlockScoutWeb do
+    scope "/insights/:entity/", BlockScoutWeb do
       pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
-      get("/api-docs", PageNotFoundController, :index)
-      get("/eth-rpc-api-docs", PageNotFoundController, :index)
+      get("/insights/:entity/api-docs", PageNotFoundController, :index)
+      get("/insights/:entity/eth-rpc-api-docs", PageNotFoundController, :index)
     end
   end
 
-  scope "/", BlockScoutWeb do
+  scope "/insights/:entity/", BlockScoutWeb do
     pipe_through([:browser, BlockScoutWeb.Plug.AllowIframe])
 
-    get("/api-docs", APIDocsController, :index)
-    get("/eth-rpc-api-docs", APIDocsController, :eth_rpc)
+    get("/insights/:entity/api-docs", APIDocsController, :index)
+    get("/insights/:entity/eth-rpc-api-docs", APIDocsController, :eth_rpc)
   end
 
   url_params = Application.compile_env(:block_scout_web, BlockScoutWeb.Endpoint)[:url]
@@ -65,26 +65,26 @@ defmodule BlockScoutWeb.Router do
   path = url_params[:path]
 
   if path != api_path do
-    scope to_string(api_path) <> "/verify_smart_contract" do
+    scope to_string(api_path) <> "/insights/:entity/verify_smart_contract" do
       pipe_through(:api)
 
-      post("/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
+      post("/insights/:entity/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
     end
   else
-    scope "/verify_smart_contract" do
+    scope "/insights/:entity/verify_smart_contract" do
       pipe_through(:api)
 
-      post("/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
+      post("/insights/:entity/contract_verifications", BlockScoutWeb.AddressContractVerificationController, :create)
     end
   end
 
   if Application.compile_env(:block_scout_web, WebRouter)[:enabled] do
-    forward("/", BlockScoutWeb.WebRouter)
+    forward("/insights/:entity/", BlockScoutWeb.WebRouter)
   else
-    scope "/", BlockScoutWeb do
+    scope "/insights/:entity/", BlockScoutWeb do
       pipe_through(:browser)
 
-      forward("/", APIDocsController, :index)
+      forward("/insights/:entity/", APIDocsController, :index)
     end
   end
 end
