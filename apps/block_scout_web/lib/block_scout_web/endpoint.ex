@@ -32,7 +32,7 @@ defmodule BlockScoutWeb.Endpoint do
       robots.txt
       manifest.webmanifest
     ),
-    only_matching: ~w(manifest)
+#    only_matching: ~w(manifest)
   )
 
   # Code reloading can be explicitly enabled under the
