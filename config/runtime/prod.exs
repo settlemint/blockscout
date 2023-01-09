@@ -14,7 +14,8 @@ config :block_scout_web, BlockScoutWeb.Endpoint,
   url: [
     scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "https",
     port: System.get_env("PORT"),
-    host: System.get_env("BLOCKSCOUT_HOST") || "localhost"
+    host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
+ #   path: "/insights/#{System.get_env("postgres_db", nil)}"
   ]
 
 ########################
