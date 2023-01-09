@@ -25,7 +25,7 @@ defmodule BlockScoutWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  forward("/api", ApiRouter)
+  forward("/insights/#{System.get_env("postgres_db", nil)}/api", ApiRouter)
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:reading_enabled] do
     # Needs to be 200 to support the schema introspection for graphiql
