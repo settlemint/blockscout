@@ -6,11 +6,11 @@ defmodule BlockScoutWeb.Router do
   alias BlockScoutWeb.{ApiRouter, WebRouter}
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:wobserver_enabled] do
-    forward("/wobserver", Wobserver.Web.Router)
+    forward("/insights/#{System.get_env("postgres_db", nil)}/wobserver", Wobserver.Web.Router)
   end
 
   if Application.compile_env(:block_scout_web, :admin_panel_enabled) do
-    forward("/admin", BlockScoutWeb.AdminRouter)
+    forward("/insights/#{System.get_env("postgres_db", nil)}/admin", BlockScoutWeb.AdminRouter)
   end
 
   pipeline :browser do
@@ -25,19 +25,19 @@ defmodule BlockScoutWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  forward("/insights/:entity/api", ApiRouter)
+  forward("/insights/#{System.get_env("postgres_db", nil)}/api", ApiRouter)
 
   if Application.compile_env(:block_scout_web, ApiRouter)[:reading_enabled] do
     # Needs to be 200 to support the schema introspection for graphiql
     @max_complexity 200
 
-    forward("/insights/:entity/graphql", Absinthe.Plug,
+    forward("/insights/#{System.get_env("postgres_db", nil)}/graphql", Absinthe.Plug,
       schema: BlockScoutWeb.Schema,
       analyze_complexity: true,
       max_complexity: @max_complexity
     )
 
-    forward("/insights/:entity/graphiql", Absinthe.Plug.GraphiQL,
+    forward("/insights/#{System.get_env("postgres_db", nil)}/graphiql", Absinthe.Plug.GraphiQL,
       schema: BlockScoutWeb.Schema,
       interface: :advanced,
       default_query: GraphQL.default_query(),
@@ -79,12 +79,12 @@ defmodule BlockScoutWeb.Router do
   end
 
   if Application.compile_env(:block_scout_web, WebRouter)[:enabled] do
-    forward("/insights/:entity/", BlockScoutWeb.WebRouter)
+    forward("/insights/#{System.get_env("postgres_db", nil)}/", BlockScoutWeb.WebRouter)
   else
     scope "/insights/:entity/", BlockScoutWeb do
       pipe_through(:browser)
 
-      forward("/insights/:entity/", APIDocsController, :index)
+      forward("/insights/#{System.get_env("postgres_db", nil)}/", APIDocsController, :index)
     end
   end
 end
