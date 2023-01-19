@@ -1,7 +1,9 @@
 import { Socket } from "phoenix";
 import { locale } from "./locale";
 
-let websocketRootUrl = window.location.pathname; // process.env.SOCKET_ROOT
+let websocketRootUrl = window.location.hostname.endsWith("settlemint.com")
+  ? process.env.SOCKET_ROOT
+  : window.location.pathname; // process.env.SOCKET_ROOT
 if (!websocketRootUrl) {
   websocketRootUrl = "";
 }
