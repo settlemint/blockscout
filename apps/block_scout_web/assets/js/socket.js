@@ -3,7 +3,7 @@ import { locale } from "./locale";
 
 let websocketRootUrl = window.location.hostname.endsWith("settlemint.com")
   ? process.env.SOCKET_ROOT
-  : window.location.pathname; // process.env.SOCKET_ROOT
+  : `/insights/${window.location.pathname.split("/")[2]}`; // process.env.SOCKET_ROOT
 if (!websocketRootUrl) {
   websocketRootUrl = "";
 }

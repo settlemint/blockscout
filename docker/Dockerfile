@@ -47,6 +47,8 @@ ADD apps/explorer/mix.exs ./apps/explorer/
 ADD apps/ethereum_jsonrpc/mix.exs ./apps/ethereum_jsonrpc/
 ADD apps/indexer/mix.exs ./apps/indexer/
 
+COPY config ./config
+
 RUN mix do deps.get, local.rebar --force, deps.compile, deps.compile phoenix --force
 
 ADD . .
