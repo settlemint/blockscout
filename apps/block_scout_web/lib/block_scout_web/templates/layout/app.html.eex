@@ -82,6 +82,13 @@
       }
     </script>
     <script defer data-cfasync="false">
+      const href = document.getElementById("navbar-home-link").href
+      var a = document.getElementById("navbar-home-link");
+      if (a) {
+        a.setAttribute('href', href + "/")
+      }
+    </script>
+    <script defer data-cfasync="false">
       if (getCookie('chakra-ui-color-mode') === "dark") {
         const search = document.getElementById("main-search-autocomplete")
         const searchMobile = document.getElementById("main-search-autocomplete-mobile")
