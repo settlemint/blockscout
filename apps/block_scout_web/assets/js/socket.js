@@ -12,9 +12,9 @@ if (websocketRootUrl.endsWith("/")) {
 }
 console.log("WEBSOCKETROOTURL", websocketRootUrl);
 const socket = new Socket(websocketRootUrl + "/socket", {
-  logger: (kind, msg, data) => {
+  /* logger: (kind, msg, data) => {
     console.log(`${kind}: ${msg}`, data);
-  },
+  }, */
   params: { locale },
   transport: WebSocket,
 });
