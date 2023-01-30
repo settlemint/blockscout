@@ -82,7 +82,7 @@
       }
     </script>
     <script defer data-cfasync="false">
-        setTimeout(()=>document.getElementById("navbar-home-link").setAttribute('href', document.getElementById("navbar-home-link") + "/"), 2000 )
+        setTimeout(()=>document.getElementById("navbar-home-link").setAttribute('href', document.getElementById("navbar-home-link") + "/"), 1 )
     </script>
     <script defer data-cfasync="false">
       if (getCookie('chakra-ui-color-mode') === "dark") {
