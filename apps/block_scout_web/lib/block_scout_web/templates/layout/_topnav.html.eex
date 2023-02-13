@@ -2,7 +2,11 @@
 <nav class="navbar navbar-dark navbar-expand-lg navbar-primary" data-selector="navbar" id="top-navbar">
   <div class="container-fluid navbar-container">
     <%= link to: System.get_env("PATH_PREFIX") || webapp_url(@conn), id: "navbar-home-link", class: "navbar-brand", "data-test": "header_logo" do %>
-      <img class="navbar-logo" id="navbar-logo" src="<%= System.get_env("PATH_PREFIX") <> "/images/blockscout_logo.svg"  %>" alt="<%= subnetwork_title() %>"/>
+      <%= if System.get_env("PATH_PREFIX") do %>
+        <img class="navbar-logo" id="navbar-logo" src="<%= System.get_env("PATH_PREFIX") <> "/images/blockscout_logo.svg"  %>" alt="<%= subnetwork_title() %>"/>
+        <% else %>
+        <img class="navbar-logo" id="navbar-logo" src="/images/blockscout_logo.svg" alt="<%= subnetwork_title() %>"/>
+      <% end %>
       <%= if logo_text() do %>
         <span class="logo-text <%= unless logo(), do: "no-logo" %>"> <%= logo_text() %> </span>
       <% end %>
