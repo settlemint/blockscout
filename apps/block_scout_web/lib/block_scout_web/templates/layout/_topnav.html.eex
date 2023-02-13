@@ -46,7 +46,7 @@
               <div class="nav-submenu">
                 <span>
                   <%= gettext("Transactions") %>
-                </span> 
+                </span>
               </div>
               <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
               <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
@@ -107,12 +107,12 @@
               <%= link(
                     gettext("RPC"),
                     class: "dropdown-item #{tab_status("api-docs", @conn.request_path)}",
-                    to: api_docs_path(@conn, :index)
+                    to: api_url() <> api_docs_path(@conn, :index)
                   ) %>
               <%= link(
                     gettext("Eth RPC"),
                     class: "dropdown-item #{tab_status("eth-rpc-api-docs", @conn.request_path)}",
-                    to: api_docs_path(@conn, :eth_rpc)
+                    to: api_url() <> api_docs_path(@conn, :eth_rpc)
                   ) %>
             </div>
           </li>
