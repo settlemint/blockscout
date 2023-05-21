@@ -41,8 +41,14 @@ defmodule Indexer.Block.Realtime.Fetcher do
 
   @minimum_safe_polling_period :timer.seconds(1)
 
+  @shutdown_after :timer.minutes(1)
+
   @enforce_keys ~w(block_fetcher)a
-  defstruct ~w(block_fetcher subscription previous_number timer)a
+
+  defstruct block_fetcher: nil,
+            subscription: nil,
+            previous_number: nil,
+            timer: nil
 
   @type t :: %__MODULE__{
           block_fetcher: %Block.Fetcher{
@@ -53,7 +59,8 @@ defmodule Indexer.Block.Realtime.Fetcher do
             receipts_concurrency: pos_integer()
           },
           subscription: Subscription.t(),
-          previous_number: pos_integer() | nil
+          previous_number: pos_integer() | nil,
+          timer: reference()
         }
 
   def start_link([arguments, gen_server_options]) do
@@ -117,9 +124,14 @@ defmodule Indexer.Block.Realtime.Fetcher do
     new_previous_number =
       case EthereumJSONRPC.fetch_block_number_by_tag("latest", json_rpc_named_arguments) do
         {:ok, number} when is_nil(previous_number) or number != previous_number ->
-          start_fetch_and_import(number, block_fetcher, previous_number)
-
-          number
+          if abnormal_gap?(number, previous_number) do
+            new_number = max(number, previous_number)
+            start_fetch_and_import(new_number, block_fetcher, previous_number)
+            new_number
+          else
+            start_fetch_and_import(number, block_fetcher, previous_number)
+            number
+          end
 
         _ ->
           previous_number
@@ -228,13 +240,13 @@ defmodule Indexer.Block.Realtime.Fetcher do
     {:ok, []}
   end
 
-  defp start_fetch_and_import(number, block_fetcher, previous_number) do
+  def start_fetch_and_import(number, block_fetcher, previous_number) do
     start_at = determine_start_at(number, previous_number)
     is_reorg = reorg?(number, previous_number)
 
     for block_number_to_fetch <- start_at..number do
       args = [block_number_to_fetch, block_fetcher, is_reorg]
-      Task.Supervisor.start_child(TaskSupervisor, __MODULE__, :fetch_and_import_block, args)
+      Task.Supervisor.start_child(TaskSupervisor, __MODULE__, :fetch_and_import_block, args, shutdown: @shutdown_after)
     end
   end
 
@@ -256,10 +268,21 @@ defmodule Indexer.Block.Realtime.Fetcher do
 
   defp reorg?(_, _), do: false
 
+  @default_max_gap 1000
+  defp abnormal_gap?(_number, nil), do: false
+
+  defp abnormal_gap?(number, previous_number) do
+    max_gap = Application.get_env(:indexer, __MODULE__)[:max_gap] || @default_max_gap
+
+    abs(number - previous_number) > max_gap
+  end
+
   @reorg_delay 5_000
 
   @decorate trace(name: "fetch", resource: "Indexer.Block.Realtime.Fetcher.fetch_and_import_block/3", tracer: Tracer)
   def fetch_and_import_block(block_number_to_fetch, block_fetcher, reorg?, retry \\ 3) do
+    Process.flag(:trap_exit, true)
+
     Indexer.Logger.metadata(
       fn ->
         if reorg? do
@@ -422,7 +445,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
         importable_balances_daily_params =
           Enum.map(params_list, fn param ->
             day = Map.get(block_timestamp_map, "#{param.block_number}")
-            Map.put(param, :day, day)
+            (day && Map.put(param, :day, day)) || param
           end)
 
         {:ok,

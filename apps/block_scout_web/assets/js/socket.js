@@ -1,9 +1,9 @@
 import { Socket } from "phoenix";
 import { locale } from "./locale";
 
-let websocketRootUrl = window.location.hostname.endsWith("settlemint.com")
-  ? process.env.SOCKET_ROOT
-  : `/insights/${window.location.pathname.split("/")[2]}`; // process.env.SOCKET_ROOT
+let websocketRootUrl = window.location.hostname.endsWith("settlemint.com") && !window.location.hostname.includes('onprem')
+    ? process.env.SOCKET_ROOT
+    : `/insights/${window.location.pathname.split("/")[2]}`; // process.env.SOCKET_ROOT
 if (!websocketRootUrl) {
   websocketRootUrl = "";
 }
@@ -34,6 +34,7 @@ export default socket;
  * Returns a Channel instance.
  */
 export function subscribeChannel(topic) {
+  // @ts-ignore
   const channel = socket.channels.find((channel) => channel.topic === topic);
 
   if (channel) {
