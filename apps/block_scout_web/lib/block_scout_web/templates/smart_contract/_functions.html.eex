@@ -18,8 +18,14 @@
     <% end %>
   <% end %>
 <% end %>
-<%= if smart_contract_verified && @address.smart_contract.is_changed_bytecode do %>
-  <%= render BlockScoutWeb.CommonComponentsView, "_changed_bytecode_warning.html" %>
+<%= if smart_contract_verified do %>
+  <%= if @address.smart_contract.is_changed_bytecode do %>
+    <%= render BlockScoutWeb.CommonComponentsView, "_changed_bytecode_warning.html" %>
+  <% else %>
+    <div class="d-none" data-selector="hidden-bytecode-warning">
+      <%= render BlockScoutWeb.CommonComponentsView, "_changed_bytecode_warning.html" %>
+    </div>
+  <% end %>
 <% end %>
 <%= if @contract_type == "proxy" do %>
 <div class="implementation-container">
@@ -57,7 +63,7 @@
                           @contract_abi
                         end 
                     end %>
-        <form class="form-inline" data-function-form data-action="<%= if @action == "write", do: :write, else: :read %>" data-type="<%= @contract_type %>" data-url="<%= smart_contract_path(@conn, :show, Address.checksum(@address.hash)) %>" data-contract-address="<%= @address.hash %>" data-contract-abi="<%= function_abi %>" data-implementation-abi="<%= function_abi %>" data-chain-id="<%= Explorer.Chain.Cache.NetVersion.get_version() %>" data-custom-abi="<%= if assigns[:custom_abi], do: true, else: false %>">
+        <form class="form-inline" data-function-form data-action="<%= if @action == "write", do: :write, else: :read %>" data-type="<%= @contract_type %>" data-url="<%= smart_contract_path(@conn, :show, Address.checksum(@address.hash)) %>" data-contract-address="<%= @address.hash %>" data-contract-abi="<%= function_abi %>" data-implementation-abi="<%= function_abi %>" data-chain-id="<%= Application.get_env(:block_scout_web, :chain_id) %>" data-custom-abi="<%= if assigns[:custom_abi], do: true, else: false %>">
           <input type="hidden" name="function_name" value='<%= function["name"] %>' />
           <input type="hidden" name="method_id" value='<%= function["method_id"] %>' />
 
@@ -92,7 +98,7 @@
           <%= if Helper.payable?(function) do %>
             <div class="form-group pr-3 d-flex">
               <input type="number" name="function_input" tx-value
-              data-toggle="tooltip" title='Amount in native token <<%= gettext("ETH")%>>' class="form-control form-control-sm address-input-sm" placeholder='value(<%= gettext("ETH")%>)' min="0" step="1e-18" />
+              data-toggle="tooltip" title='Amount in native token <<%= Explorer.coin_name() %>>' class="form-control form-control-sm address-input-sm" placeholder='value(<%= Explorer.coin_name() %>)' min="0" step="1e-18" />
             </div>
           <% end %>
 
@@ -115,7 +121,7 @@
       </div>
     <% else %>
       <%= cond do %>
-        <%= outputs?(function["outputs"]) -> %>
+        <% outputs?(function["outputs"]) -> %>
           <div class="align-self-center">
             <% length = Enum.count(function["outputs"]) %>
             <%= for {output, index} <- Enum.with_index(function["outputs"]) do %>
@@ -134,7 +140,7 @@
                       <span class="py-2 px-2">
                         <input class="wei-ether" type="checkbox" autocomplete="off">
                         <span class="d-inline-block" data-conversion-text-wei><%= gettext("WEI")%></span>
-                        <span class="d-none" data-conversion-text-eth><%= gettext("ETH")%></span>
+                        <span class="d-none" data-conversion-text-eth><%= Explorer.coin_name() %></span>
                       </span>
                     </div>
                   </div> 
@@ -146,7 +152,7 @@
           </div>
         <% error?(function["outputs"]) -> %>
           <% {:error, text_error} = function["outputs"] %>
-          <div class="alert alert-danger py-2 word-break-all" style="margin-bottom: 0;"><%= text_error %></div>
+          <div class="alert alert-danger py-2 word-break-all" style="margin-bottom: 0;"><%= cut_rpc_url(text_error) %></div>
         <% true -> %>
           <% nil %>
       <% end %>

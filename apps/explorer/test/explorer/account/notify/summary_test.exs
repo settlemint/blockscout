@@ -27,7 +27,7 @@ defmodule Explorer.Account.Notify.SummaryTest do
                  block_number: block_number,
                  from_address_hash: from_address.hash,
                  method: "transfer",
-                 name: "POA",
+                 name: "ETH",
                  subject: "Coin transaction",
                  to_address_hash: to_address.hash,
                  transaction_hash: tx_hash,
@@ -74,7 +74,7 @@ defmodule Explorer.Account.Notify.SummaryTest do
                  block_number: block.number,
                  from_address_hash: address.hash,
                  method: "contract_creation",
-                 name: "POA",
+                 name: "ETH",
                  subject: "Contract creation",
                  to_address_hash: contract_address.hash,
                  transaction_hash: tx_hash,
@@ -152,7 +152,7 @@ defmodule Explorer.Account.Notify.SummaryTest do
         :token_transfer
         |> insert(
           transaction: tx,
-          token_id: 42,
+          token_ids: [42],
           token_contract_address: token.contract_address
         )
         |> Repo.preload([
@@ -198,7 +198,7 @@ defmodule Explorer.Account.Notify.SummaryTest do
         :token_transfer
         |> insert(
           transaction: tx,
-          token_id: 42,
+          token_ids: [42],
           token_contract_address: token.contract_address
         )
         |> Repo.preload([
@@ -244,7 +244,6 @@ defmodule Explorer.Account.Notify.SummaryTest do
         :token_transfer
         |> insert(
           transaction: tx,
-          token_id: nil,
           token_ids: [23, 42],
           token_contract_address: token.contract_address
         )
