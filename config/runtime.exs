@@ -1,8 +1,5 @@
 import Config
 
-[__DIR__ | ~w(config_helper.exs)]
-|> Path.join()
-|> Code.eval_file()
 
 ######################
 ### BlockScout Web ###
