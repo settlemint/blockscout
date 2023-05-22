@@ -4,6 +4,8 @@
 
 ### Features
 
+- [#7532](https://github.com/blockscout/blockscout/pull/7532) - Handle empty id in json rpc responses
+
 ### Fixes
 
 - [#7758](https://github.com/blockscout/blockscout/pull/7758) - Remove limit for configurable fetchers
