@@ -4,7 +4,7 @@ import Config
 |> Path.join()
 |> Code.eval_file()
 
-######################
+#######################
 ### BlockScout Web ###
 ######################
 
