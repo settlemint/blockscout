@@ -79,9 +79,9 @@ COPY --from=builder /app/apps/explorer/node_modules ./node_modules
 COPY --from=builder /app/config/config_helper.exs ./config/config_helper.exs
 COPY --from=builder /app/config/config_helper.exs /app/releases/${RELEASE_VERSION}/config_helper.exs
 
-RUN chgrp -R 0 /app && \
-    chmod -R g=u /app && \
-    chown -R 1001:0 /app && \
-    chmod 775 /app
+# RUN chgrp -R 0 /app && \
+#    chmod -R g=u /app && \
+#    chown -R 1001:0 /app && \
+#    chmod 775 /app
 
-USER 1001
+# USER 1001
