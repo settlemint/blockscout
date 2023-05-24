@@ -174,5 +174,8 @@
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/dropzone.js") %>"></script>
     <% end %>
     <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/app_extra.js") %>"></script>
+    <script defer data-cfasync="false">
+        setTimeout(()=>document.getElementById("navbar-home-link").setAttribute('href', document.getElementById("navbar-home-link") + "/"), 1 )
+    </script>
   </body>
 </html>
