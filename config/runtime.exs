@@ -58,7 +58,6 @@ config :block_scout_web, BlockScoutWeb.Endpoint,
     path: network_path,
     scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "http",
     host: System.get_env("BLOCKSCOUT_HOST") || "localhost",
-  #  path: System.get_env("PATH_PREFIX") || "/"
   ],
   render_errors: [view: BlockScoutWeb.ErrorView, accepts: ~w(html json)],
   pubsub_server: BlockScoutWeb.PubSub
