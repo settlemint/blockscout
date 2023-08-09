@@ -2,7 +2,7 @@ import { Socket } from 'phoenix'
 import { locale } from './locale'
 import { commonPath } from './lib/path_helper'
 
-let websocketRootUrl = commonPath
+let websocketRootUrl = window.location.pathname.startsWith(commonPath) ? commonPath : '/'
 if (websocketRootUrl.endsWith('/')) {
   websocketRootUrl = websocketRootUrl.slice(0, -1)
 }
