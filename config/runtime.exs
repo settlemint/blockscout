@@ -53,7 +53,6 @@ network_path =
 # Configures the endpoint
 config :block_scout_web, BlockScoutWeb.Endpoint,
   server: true,
-###  static_url: [path: "/"],
   url: [
     path: network_path,
     scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "http",
