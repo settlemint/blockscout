@@ -28,6 +28,7 @@ defmodule BlockScoutWeb.CSPHeader do
         font-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.gstatic.com data:;\
         frame-src 'self' 'unsafe-inline' 'unsafe-eval' #{czilladx_url} #{google_url};\
         frame-ancestors 'self' http://onprem.settlemint.local/;\
+        manifest-src 'self' https://*.settlemint.com/ http://onprem.settlemint.local/;\
       "
     })
   end
