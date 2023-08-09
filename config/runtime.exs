@@ -1,6 +1,6 @@
 import Config
 
-["/releases/5.2.1/" | ~w(config_helper.exs)]
+[__DIR__ | ~w(config_helper.exs)]
 |> Path.join()
 |> Code.eval_file()
 
