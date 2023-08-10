@@ -19,7 +19,7 @@ defmodule BlockScoutWeb.CSPHeader do
 
     Controller.put_secure_browser_headers(conn, %{
       "content-security-policy" => "\
-      connect-src 'self' #{websocket_endpoints(conn)} wss://*.bridge.walletconnect.org/ http://onprem.127.0.0.1.nip.io/ https://*.settlemint.com/ http://onprem.settlemint.local/ https://*.settlemint.local/ ws://onprem.127.0.0.1.nip.io/ wss://*.settlemint.com/ https://request-global.czilladx.com/ https://raw.githubusercontent.com/trustwallet/assets/ https://registry.walletconnect.org/data/wallets.json https://*.poa.network;\
+      connect-src 'self' #{websocket_endpoints(conn)} wss://*.bridge.walletconnect.org/ http://onprem.127.0.0.1.nip.io/ https://*.settlemint.com/ http://onprem.settlemint.local/ http://*.settlemint.local/ https://*.settlemint.local/ ws://onprem.127.0.0.1.nip.io/ wss://*.settlemint.com/ https://request-global.czilladx.com/ https://raw.githubusercontent.com/trustwallet/assets/ https://registry.walletconnect.org/data/wallets.json https://*.poa.network;\
       default-src 'self' https://*.settlemint.com/;\
         script-src 'self' 'unsafe-inline' 'unsafe-eval' #{coinzillatag_url} #{google_url} https://www.gstatic.com;\
         style-src 'self' 'unsafe-inline' 'unsafe-eval' http://fonts.googleapis.com https://fonts.googleapis.com;\
