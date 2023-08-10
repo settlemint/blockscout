@@ -4,7 +4,7 @@
 <% main_nets = dropdown_head_main_nets() %>
 <nav class="navbar navbar-dark navbar-expand-lg navbar-primary" data-selector="navbar" id="top-navbar">
   <div class="container-fluid navbar-container">
-    <%= link to: System.get_env("NETWORK_PATH") || webapp_url(@conn), id: "navbar-home-link", class: "navbar-brand", "data-test": "header_logo" do %>
+    <%= link to: System.get_env("NETWORK_PATH") <> "/" || webapp_url(@conn), id: "navbar-home-link", class: "navbar-brand", "data-test": "header_logo" do %>
       <%= if System.get_env("NETWORK_PATH") do %>
         <img class="navbar-logo" id="navbar-logo" src="<%= System.get_env("NETWORK_PATH") <> "/images/blockscout_logo.svg"  %>" alt="<%= subnetwork_title() %>"/>
         <% else %>
@@ -116,12 +116,12 @@
               <%= link(
                     gettext("RPC"),
                     class: "dropdown-item #{tab_status("api-docs", @conn.request_path)}",
-                    to: api_url() <> api_docs_path(@conn, :index)
+                    to: api_url() <> "/api-docs"
                   ) %>
               <%= link(
                     gettext("Eth RPC"),
                     class: "dropdown-item #{tab_status("eth-rpc-api-docs", @conn.request_path)}",
-                    to: api_url() <> api_docs_path(@conn, :eth_rpc)
+                    to: api_url() <> "/eth-rpc-api-docs"
                   ) %>
             </div>
           </li>
