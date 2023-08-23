@@ -37,6 +37,11 @@ See the [project documentation](https://docs.blockscout.com/) for instructions:
 - [ENV variables](https://docs.blockscout.com/for-developers/information-and-settings/env-variables)
 - [Configuration options](https://docs.blockscout.com/for-developers/configuration-options)
 
+## Build and Push Docker Image
+```
+docker buildx build --build-arg CACHE_EXCHANGE_RATES_PERIOD= --build-arg API_V1_READ_METHODS_DISABLED=false --build-arg API_PATH=/ --build-arg NETWORK_PATH=/ --build-arg LOGO=/images/blockscout_logo.svg --build-arg DISABLE_WEBAPP=false --build-arg API_V1_WRITE_METHODS_DISABLED=false --build-arg CACHE_TOTAL_GAS_USAGE_COUNTER_ENABLED= --build-arg WOBSERVER_ENABLED=false --build-arg ADMIN_PANEL_ENABLED=true --build-arg CACHE_ADDRESS_WITH_BALANCES_UPDATE_INTERVAL= --build-arg DISABLE_BRIDGE_MARKET_CAP_UPDATER=true --build-arg DECODE_NOT_A_CONTRACT_CALLS=false --build-arg SOCKET_ROOT=/ --build-arg CHAIN_ID= --build-arg JSON_RPC= --build-arg COIN_NAME=Native_Token --build-arg COIN=NT --build-arg SUBNETWORK= --build-arg DISABLE_EXCHANGE_RATES=true --build-arg SECRET_KEY_BASE=RMgI4C1HSkxsEjdhtGMfwAHfyT6CKWXOgzCboJflfSm4jeAlic52io05KB6mqzc5 --build-arg ENABLE_TXS_STATS=true --build-arg SHOW_TXS_CHART=true --build-arg MIXPANEL_URL= --build-arg MIXPANEL_TOKEN= --build-arg AMPLITUDE_URL= --build-arg AMPLITUDE_API_KEY= --build-arg BLOCKSCOUT_VERSION=v5.2.2-beta --build-arg RELEASE_VERSION=5.2.2 --build-arg LOGO=/explorer/images/blockscout_logo.svg --file ./docker/Dockerfile --platform linux/amd64 --tag ghcr.io/settlemint/blockscout:latest --tag ghcr.io/settlemint/blockscout:v5.2.2-beta-APPEND_GIT_SHA --push .
+```
+
 ## Acknowledgements
 
 We would like to thank the [EthPrize foundation](http://ethprize.io/) for their funding support.
